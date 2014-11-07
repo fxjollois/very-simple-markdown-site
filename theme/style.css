@@ -1,0 +1,9 @@
+body {
+	font-family: Verdana;
+	color: red;
+}
+
+a.active {
+	background-color: green;
+}
+
