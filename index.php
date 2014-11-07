@@ -81,25 +81,31 @@ $out2->find('link', 0)->href = str_replace('index.php', '', $script_url).$out2->
 // ***************************************************************************
 
 // En-tête de la page
+$out2->find('h1', 0)->innertext = "<a href='".str_replace('index.php', '', $script_url)."'>".$out2->find('h1', 0)->innertext."</a>";
 
 // Menu du site
 $dir = CONTENT_DIR;
 $menu = "<ul>";
+$chemin = "accueil";
 
 // Fonction de lecture récursive des fichiers dans un répertoire
 function LectureRep($repname) {
-	global $menu, $script_url, $request_url;
+	global $menu, $script_url, $request_url, $chemin;
 	$fichiers = scandir($repname);
 	if (in_array("index.md", $fichiers)) { // on est dans un répertoire valide
 		$pd = new Parsedown();
 		if ($repname == CONTENT_DIR) // on est à la racine -> titre = Accueil
-			$titre = "Accueil";
-		else
+			$menu .= "<ul>";
+		else {
 			$titre = str_get_html($pd->text(file_get_contents($repname."/index.md")))->find('h1', 0)->innertext;
-		$lien = str_replace('index.php', '', $script_url).str_replace(CONTENT_DIR, '', $repname); 
-		$active = "";
-		if ($lien == $request_url || strstr($request_url, $lien)) $active = " class='active'";
-		$menu .= "<li><a href ='".$lien."'".$active.">".$titre."</a><ul>";
+			$lien = str_replace('index.php', '', $script_url).str_replace(CONTENT_DIR, '', $repname); 
+			$active = "";
+			if ($lien == $request_url || strstr($request_url, $lien)) { // on est dans un super-répertoire de la page demandée
+				$active = " class='active'";
+				$chemin .= "|".$titre;
+			}
+			$menu .= "<li><a href ='".$lien."'".$active.">".$titre."</a><ul>";
+		}
 		foreach ($fichiers as $fichier) {
 			if (is_dir($repname . "/" . $fichier) && $fichier != "." && $fichier != "..")  {
 				LectureRep($repname . $fichier . "/");
@@ -108,7 +114,10 @@ function LectureRep($repname) {
 				$titre = str_get_html($pd->text(file_get_contents($repname."/".$fichier)))->find('h1', 0)->innertext;
 				$lien = str_replace('index.php', '', $script_url).str_replace(CONTENT_DIR, '', $repname).substr($fichier, 0, -3); 
 				$active = "";
-				if ($lien == $request_url) $active = " class='active'";
+				if ($lien == $request_url) {
+					$active = " class='active'";
+					$chemin .= "|".$titre;
+				}
 				$menu .= "<li><a href ='".$lien."'".$active.">".$titre."</a></li>";
 			}
 		}
@@ -116,10 +125,12 @@ function LectureRep($repname) {
 	}
 }
 LectureRep($dir);
-
 $menu .= "</ul>";
-
 $out2->find("nav", 0)->innertext = $menu;
+
+// On indique la où on est dans la div #chemin
+$out2->find('#chemin', 0)->innertext = $chemin;
+
 
 // Section contenu
 $out2->find("section", 0)->innertext = $parsed;

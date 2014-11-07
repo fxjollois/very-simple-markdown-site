@@ -1,0 +1,3 @@
+# Page qui parle de quelque chose
+
+Comme indiqué, on peut mettre des pages qui parlent de choses...

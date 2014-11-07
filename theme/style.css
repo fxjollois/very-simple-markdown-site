@@ -1,9 +1,91 @@
+/* 
+ Palette (monochromatique) de couleurs obtenu sur paletton.com
+ color: #619595 : Couleur principal
+ color: #C9DFDF : Très clair
+ color: #93BCBC : Clair
+ color: #3D7D7D : Foncé
+ color: #1F6363 : Plus foncé
+*/
+
+/***********************************************
+ Global
+ ***********************************************/
 body {
 	font-family: Verdana;
-	color: red;
+	color: #619595;
+	background-color: white;
+	width: 80%;
+	margin: 0 auto;
 }
 
-a.active {
-	background-color: green;
+a {
+	text-decoration: none;
+	color: #509595;
+}
+a:hover {
+	color: #82BEBE;
 }
 
+/***********************************************
+ En-tête
+ ***********************************************/
+header {
+	padding: 10px;
+	background-color: #C9DFDF;
+}
+
+/***********************************************
+ Menu
+ ***********************************************/
+nav {
+}
+
+nav li {
+	list-style: none; /* Enlève les puces des listes */
+	display: inline; /* Affiche les éléments des listes en ligne */
+	/*float: left; /* Affiche les éléments de gauche à droite, en gardant la largeur définie */
+	text-align: center;
+}
+
+nav li ul { 
+	position: absolute;
+	opacity: 0;
+}
+
+nav li ul li { 
+	display: block;
+}
+
+nav li:hover > * {
+    opacity: 1;
+}
+
+
+/***********************************************
+ Contenu
+ ***********************************************/
+section {
+	margin: 0 auto 100px auto;
+	width: 90%;
+}
+
+code {
+	font-family: Courier;
+	background-color: #3D7D7D;
+	color: white; 
+	padding: 0px 2px;
+}
+
+/***********************************************
+ Pied de page
+	box-shadow: 0px 0px 12px #aaa;
+ ***********************************************/
+footer {
+	background-color: #1F6363; 
+	color: #C9DFDF; 
+	padding: 5px 0;
+}
+
+footer p {
+	text-align: right;
+}
