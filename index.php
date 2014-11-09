@@ -23,11 +23,12 @@ define('CONTENT_EXT', '.md');
 $url = '';
 $request_url = (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : '';
 $script_url  = (isset($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : '';
+$base_url = str_replace('index.php', '', $script_url);
 
 // Si différent (i.e. on n'a pas demandé explicitement la racine ou index.php de la racine)
 // on enlève le ROOT_DIR (si les choses sont bien faites)
 if($request_url != $script_url) 
-	$url = trim(preg_replace('/'. str_replace('/', '\/', str_replace('index.php', '', $script_url)) .'/', '', $request_url, 1), '/');
+	$url = trim(preg_replace('/'. str_replace('/', '\/', $base_url) .'/', '', $request_url, 1), '/');
 
 // Création du chemin de la page demandée
 if($url) $file = CONTENT_DIR . $url;
@@ -74,23 +75,23 @@ $out2 = file_get_html(ROOT_DIR . '/theme/struct.html');
 $out2->find('title', 0)->innertext = $html->find('h1', 0)->innertext;
 
 // on indique le bon lien pour le CSS
-$out2->find('link', 0)->href = str_replace('index.php', '', $script_url).$out2->find('link', 0)->href;
+$out2->find('link', 0)->href = $base_url.$out2->find('link', 0)->href;
 
 // ***************************************************************************
 // Partie corps
 // ***************************************************************************
 
 // En-tête de la page
-$out2->find('h1', 0)->innertext = "<a href='".str_replace('index.php', '', $script_url)."'>".$out2->find('h1', 0)->innertext."</a>";
+$out2->find('h1', 0)->innertext = "<a href='".$base_url."'>".$out2->find('h1', 0)->innertext."</a>";
 
 // Menu du site
 $dir = CONTENT_DIR;
-$menu = "<ul>";
+$menu = "";
 $chemin = "accueil";
 
 // Fonction de lecture récursive des fichiers dans un répertoire
 function LectureRep($repname) {
-	global $menu, $script_url, $request_url, $chemin;
+	global $menu, $base_url, $request_url, $chemin;
 	$fichiers = scandir($repname);
 	if (in_array("index.md", $fichiers)) { // on est dans un répertoire valide
 		$pd = new Parsedown();
@@ -98,7 +99,7 @@ function LectureRep($repname) {
 			$menu .= "<ul>";
 		else {
 			$titre = str_get_html($pd->text(file_get_contents($repname."/index.md")))->find('h1', 0)->innertext;
-			$lien = str_replace('index.php', '', $script_url).str_replace(CONTENT_DIR, '', $repname); 
+			$lien = $base_url.str_replace(CONTENT_DIR, '', $repname); 
 			$active = "";
 			if ($lien == $request_url || strstr($request_url, $lien)) { // on est dans un super-répertoire de la page demandée
 				$active = " class='active'";
@@ -112,7 +113,7 @@ function LectureRep($repname) {
 			}
 			elseif (substr($fichier, -3, 3) == ".md" && $fichier != "index.md" && $fichier != "404.md") { 
 				$titre = str_get_html($pd->text(file_get_contents($repname."/".$fichier)))->find('h1', 0)->innertext;
-				$lien = str_replace('index.php', '', $script_url).str_replace(CONTENT_DIR, '', $repname).substr($fichier, 0, -3); 
+				$lien = $base_url.str_replace(CONTENT_DIR, '', $repname).substr($fichier, 0, -3); 
 				$active = "";
 				if ($lien == $request_url) {
 					$active = " class='active'";
@@ -125,7 +126,6 @@ function LectureRep($repname) {
 	}
 }
 LectureRep($dir);
-$menu .= "</ul>";
 $out2->find("nav", 0)->innertext = $menu;
 
 // On indique la où on est dans la div #chemin
@@ -136,6 +136,10 @@ $out2->find('#chemin', 0)->innertext = $chemin;
 $out2->find("section", 0)->innertext = $parsed;
 
 // Pied de page
+
+// Ajout du script
+$out2->find('body', 0)->innertext .= '<script async src = "'.$base_url.'theme/script.js"></script>';
+    
 
 
 // ***************************************************************************

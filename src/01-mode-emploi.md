@@ -5,6 +5,7 @@ Voici un petit guide qui explique comment utiliser ce projet.
 ## Installation
 
 C'est simple, et normalement à faire en quelques étapes :
+
 1. Copier l'ensemble des fichiers dans un répertoire ;
 2. Vous assurer le fichier `•htaccess` (ligne 2) pointe vers l'url de base de votre site ;
 3. Vous assurer que le PHP est disponible sur le serveur (ou sur votre ordinateur pour 

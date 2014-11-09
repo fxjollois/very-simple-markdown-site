@@ -19,9 +19,13 @@ body {
 }
 
 a {
+	color: #3D7D7D;
 	text-decoration: none;
-	color: #509595;
 }
+
+a::before { content: '['; }
+a::after { content: ']'; }
+
 a:hover {
 	color: #82BEBE;
 }
@@ -33,32 +37,35 @@ header {
 	padding: 10px;
 	background-color: #C9DFDF;
 }
+header a::before { content: ''; }
+header a::after { content: ''; }
+
+header h1 {
+	text-align: right;
+}
 
 /***********************************************
  Menu
  ***********************************************/
-nav {
-}
+nav a::before { content: ''; }
+nav a::after { content: ''; }
 
+nav > *, nav li  {
+	list-style: none;
+}
+/*
 nav li {
-	list-style: none; /* Enlève les puces des listes */
-	display: inline; /* Affiche les éléments des listes en ligne */
-	/*float: left; /* Affiche les éléments de gauche à droite, en gardant la largeur définie */
-	text-align: center;
+	list-style: none; /* Enlève les puces des listes * /
+	display: inline; /* Affiche les éléments des listes en ligne * /
+	padding: 0;
 }
 
-nav li ul { 
-	position: absolute;
-	opacity: 0;
+nav li > * {
+	list-style: none; /* Enlève les puces des listes * /
+	display: inline; /* Affiche les éléments des listes en ligne * /
+	padding: 0;
 }
-
-nav li ul li { 
-	display: block;
-}
-
-nav li:hover > * {
-    opacity: 1;
-}
+*/
 
 
 /***********************************************
