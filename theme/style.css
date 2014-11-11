@@ -23,9 +23,6 @@ a {
 	text-decoration: none;
 }
 
-a::before { content: '['; }
-a::after { content: ']'; }
-
 a:hover {
 	color: #82BEBE;
 }
@@ -37,8 +34,6 @@ header {
 	padding: 10px;
 	background-color: #C9DFDF;
 }
-header a::before { content: ''; }
-header a::after { content: ''; }
 
 header h1 {
 	text-align: right;
@@ -47,25 +42,59 @@ header h1 {
 /***********************************************
  Menu
  ***********************************************/
-nav a::before { content: ''; }
-nav a::after { content: ''; }
-
-nav > *, nav li  {
-	list-style: none;
-}
-/*
-nav li {
-	list-style: none; /* Enlève les puces des listes * /
-	display: inline; /* Affiche les éléments des listes en ligne * /
-	padding: 0;
+nav {
+	width: 100%;
+	height: 21px;
+	background-color: #1F6363;
+	color: white;
 }
 
-nav li > * {
-	list-style: none; /* Enlève les puces des listes * /
-	display: inline; /* Affiche les éléments des listes en ligne * /
-	padding: 0;
+nav, nav ul
+{
+	padding : 0; 
+	margin : 0; 
+	list-style : none; 
+	line-height : 21px; 
+	text-align : center; 
 }
-*/
+
+nav a 
+{
+	background-color: #1F6363;
+	color: white;
+	display	: block;
+	padding	: 0;
+	width : 144px; 
+}
+
+nav li 	
+{ 
+	float : left; 
+}
+
+nav li ul 
+{ 
+	position: absolute; 
+	width: 144px; 
+	left: -999em; 
+}
+
+nav li ul ul 
+{
+	margin: -21px 0 0 144px ; 
+}
+
+nav li:hover ul ul
+{
+	left: -999em; 
+}
+
+nav li:hover ul, nav li li:hover ul
+{
+	left: auto; 
+	min-height: 0; 
+}
+
 
 
 /***********************************************
@@ -75,6 +104,10 @@ section {
 	margin: 0 auto 100px auto;
 	width: 90%;
 }
+
+section a::before { content: '['; }
+section a::after { content: ']'; }
+
 
 code {
 	font-family: Courier;

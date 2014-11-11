@@ -122,7 +122,10 @@ function LectureRep($repname) {
 				$menu .= "<li><a href ='".$lien."'".$active.">".$titre."</a></li>";
 			}
 		}
-		$menu .= "</ul>"."</li>";
+		if ($repname == CONTENT_DIR) // on est à la racine -> titre = Accueil
+			$menu .= "</ul>";
+		else
+			$menu .= "</ul>"."</li>";
 	}
 }
 LectureRep($dir);
@@ -131,14 +134,13 @@ $out2->find("nav", 0)->innertext = $menu;
 // On indique la où on est dans la div #chemin
 $out2->find('#chemin', 0)->innertext = $chemin;
 
-
 // Section contenu
 $out2->find("section", 0)->innertext = $parsed;
 
 // Pied de page
 
 // Ajout du script
-$out2->find('body', 0)->innertext .= '<script async src = "'.$base_url.'theme/script.js"></script>';
+// $out2->find('body', 0)->innertext .= '<script async src = "'.$base_url.'theme/script.js"></script>';
     
 
 
